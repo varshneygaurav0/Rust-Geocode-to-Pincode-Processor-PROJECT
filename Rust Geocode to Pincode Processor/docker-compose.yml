@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  rust-geocode:
+    build: .
+    container_name: rust-geocode
+    volumes:
+      - type: bind
+        source: ./input
+        target: /app/input
+        read_only: true
+      - type: bind
+        source: ./output
+        target: /app/output
+    command: sh -c "ls -la /app/input && echo '--- Running Application ---' && RUST_BACKTRACE=1 ./geocode-pincode || (echo '--- Error occurred ---' && cat /app/output/* 2>/dev/null) && echo '--- Contents of output directory ---' && ls -la /app/output"
